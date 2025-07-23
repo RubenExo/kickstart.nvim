@@ -1,37 +1,4 @@
 --[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-========                                    .-----.          ========
-========         .----------------------.   | === |          ========
-========         |.-""""""""""""""""""-.|   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||   KICKSTART.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
-========         ||:Tutor              ||   |:::::|          ========
-========         |'-..................-'|   |____o|          ========
-========         `"")----------------(""`   ___________      ========
-========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-========                                                     ========
-=====================================================================
-=====================================================================
-
-What is Kickstart?
-
-  Kickstart.nvim is *not* a distribution.
-
-  Kickstart.nvim is a starting point for your own configuration.
-    The goal is that you can read every line of code, top-to-bottom, understand
-    what your configuration is doing, and modify it to suit your needs.
-
-    Once you've done that, you can start exploring, configuring and tinkering to
-    make Neovim your own! That might mean leaving Kickstart just the way it is for a while
-    or immediately breaking it into modular pieces. It's up to you!
-
     If you don't know anything about Lua, I recommend taking some time to read through
     a guide. One possible example which will only take 10-15 minutes:
       - https://learnxinyminutes.com/docs/lua/
@@ -232,7 +199,64 @@ vim.opt.rtp:prepend(lazypath)
 require 'custom.plugins.init'
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automaticall
+  -- Illuminate plugin config:
+  {
+    'RRethy/vim-illuminate',
+    event = 'BufReadPost',
+    config = function()
+      require('illuminate').configure {
+        -- providers: provider used to get references in the buffer
+        providers = {
+          'lsp',
+          'treesitter',
+          'regex',
+        },
+        -- delay: delay in milliseconds
+        delay = 100,
+        -- filetypes_denylist: filetypes to not illuminate
+        filetypes_denylist = {
+          'dirvish',
+          'fugitive',
+          'alpha',
+          'NvimTree',
+          'Outline',
+          'TelescopePrompt',
+          'DressingSelect',
+          'Trouble',
+        },
+        -- filetypes_allowlist: filetypes to illuminate
+        filetypes_allowlist = {},
+        -- modes_denylist: modes to not illuminate
+        modes_denylist = {},
+        -- modes_allowlist: modes to illuminate
+        modes_allowlist = {},
+        -- providers_regex_syntax_denylist: syntax to not illuminate
+        providers_regex_syntax_denylist = {},
+        -- providers_regex_syntax_allowlist: syntax to illuminate
+        providers_regex_syntax_allowlist = {},
+        -- under_cursor: whether or not to illuminate under the cursor
+        under_cursor = true,
+      }
+
+      -- Change the highlight style (optional)
+      vim.api.nvim_set_hl(0, 'IlluminatedWordText', { underline = true })
+      vim.api.nvim_set_hl(0, 'IlluminatedWordRead', { underline = true })
+      vim.api.nvim_set_hl(0, 'IlluminatedWordWrite', { underline = true })
+    end,
+  },
+
+  {
+    'echasnovski/mini.indentscope',
+    version = false, -- always use latest version
+    config = function()
+      require('mini.indentscope').setup {
+        -- Your configuration here
+        symbol = '|',
+        options = { try_as_border = true },
+      }
+    end,
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following

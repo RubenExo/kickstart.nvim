@@ -3,6 +3,7 @@
 --
 -- See the kickstart.nvim README for more information
 --
+-- require 'vim-illumniate-master.lua.illumniate'
 vim.opt['tabstop'] = 2
 vim.opt['shiftwidth'] = 2
 return {}
