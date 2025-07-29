@@ -77,6 +77,8 @@ vim.opt.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
+vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'NONE', fg = 'NONE' })
+vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'NONE', fg = 'Grey' })
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -240,24 +242,48 @@ require('lazy').setup({
       }
 
       -- Change the highlight style (optional)
-      vim.api.nvim_set_hl(0, 'IlluminatedWordText', { underline = true })
-      vim.api.nvim_set_hl(0, 'IlluminatedWordRead', { underline = true })
-      vim.api.nvim_set_hl(0, 'IlluminatedWordWrite', { underline = true })
+      -- vim.api.nvim_set_hl(0, 'IlluminatedWordText', { underline = true })
+      --vim.api.nvim_set_hl(0, 'IlluminatedWordRead', { underline = true })
+      --vim.api.nvim_set_hl(0, 'IlluminatedWordWrite', { underline = true })
     end,
   },
-
+  --Scope line thingy plugin
   {
     'echasnovski/mini.indentscope',
     version = false, -- always use latest version
     config = function()
       require('mini.indentscope').setup {
         -- Your configuration here
-        symbol = '|',
+        symbol = '│',
         options = { try_as_border = true },
       }
     end,
   },
+  --Pretty bar at the bottom_row
+  {
+    'vim-airline/vim-airline',
+    dependencies = {
+      'vim-airline/vim-airline-themes', -- Optional for themes
+      'nvim-tree/nvim-web-devicons', -- Recommended for icons
+    },
+    config = function()
+      -- Basic airline configuration
+      -- vim.g.airline_powerline_fonts = 1
+      vim.g.airline_theme = 'zenburn' -- Use a theme
 
+      vim.api.nvim_set_hl(0, 'AirlineNormal', { fg = '#ffffff', bg = '#0000ff', bold = true })
+      vim.api.nvim_set_hl(0, 'AirlineInsert', { fg = '#ffffff', bg = '#005f00', bold = true })
+      vim.api.nvim_set_hl(0, 'AirlineVisual', { fg = '#ffffff', bg = '#af5f00', bold = true })
+
+      -- Main airline configuration
+
+      -- Configure separators for arrow-like appearance
+      vim.g.airline_left_sep = ''
+      vim.g.airline_left_alt_sep = ''
+      vim.g.airline_right_sep = ''
+      vim.g.airline_right_alt_sep = ''
+    end,
+  },
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -958,17 +984,17 @@ require('lazy').setup({
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
+      --  local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
+      -- statusline.setup { use_icons = vim.g.have_nerd_font }
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
+      --statusline.section_location = function()
+      -- return '%2l:%-2v'
+      --end
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
