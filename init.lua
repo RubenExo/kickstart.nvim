@@ -259,6 +259,11 @@ require('lazy').setup({
       }
     end,
   },
+  -- Used for git information and whatnot
+  {
+    'tpope/vim-fugitive',
+    lazy = false,
+  },
   --Pretty bar at the bottom_row
   {
     'vim-airline/vim-airline',
@@ -268,15 +273,15 @@ require('lazy').setup({
     },
     config = function()
       -- Basic airline configuration
-      -- vim.g.airline_powerline_fonts = 1
       vim.g.airline_theme = 'zenburn' -- Use a theme
 
-      vim.api.nvim_set_hl(0, 'AirlineNormal', { fg = '#ffffff', bg = '#0000ff', bold = true })
-      vim.api.nvim_set_hl(0, 'AirlineInsert', { fg = '#ffffff', bg = '#005f00', bold = true })
-      vim.api.nvim_set_hl(0, 'AirlineVisual', { fg = '#ffffff', bg = '#af5f00', bold = true })
-
-      -- Main airline configuration
-
+      -- git fugitive configs
+      vim.g['airline#extensions#branch#symbol'] = ' ' --  is a Git branch symbol
+      vim.g['airline#extensions#hunks#symbols'] = {
+        added = ' ', --  = nf-oct-git_diff_added
+        modified = ' ', --  = nf-oct-git_diff_modified
+        removed = ' ', --  = nf-oct-git_diff_removed
+      }
       -- Configure separators for arrow-like appearance
       vim.g.airline_left_sep = ''
       vim.g.airline_left_alt_sep = ''
