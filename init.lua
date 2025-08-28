@@ -1,7 +1,7 @@
 --[[
     If you don't know anything about Lua, I recommend taking some time to read through
     a guide. One possible example which will only take 10-15 minutes:
-      - https://learnxinyminutes.com/docs/lua/
+     - https://learnxinyminutes.com/docs/lua/
 
     After understanding a bit more about Lua, you can use `:help lua-guide` as a
     reference for how Neovim integrates Lua.
@@ -278,9 +278,9 @@ require('lazy').setup({
       -- git fugitive configs
       vim.g['airline#extensions#branch#symbol'] = ' ' --  is a Git branch symbol
       vim.g['airline#extensions#hunks#symbols'] = {
-        added = ' ', --  = nf-oct-git_diff_added
-        modified = ' ', --  = nf-oct-git_diff_modified
-        removed = ' ', --  = nf-oct-git_diff_removed
+        added = ' ',
+        modified = ' ',
+        removed = ' ',
       }
       -- Configure separators for arrow-like appearance
       vim.g.airline_left_sep = ''
@@ -395,13 +395,6 @@ require('lazy').setup({
     },
   },
 
-  -- NOTE: Plugins can specify dependencies.
-  --
-  -- The dependencies are proper plugin specifications as well - anything
-  -- you do for a plugin at the top level, you can do for a dependency.
-  --
-  -- Use the `dependencies` key to specify the dependencies of a particular plugin
-
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
@@ -425,18 +418,11 @@ require('lazy').setup({
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+
+      'nvim-telescope/telescope-file-browser.nvim', -- Folder navigation
     },
     config = function()
-      -- Telescope is a fuzzy finder that comes with a lot of different things that
-      -- it can fuzzy find! It's more than just a "file finder", it can search
-      -- many different aspects of Neovim, your workspace, LSP, and more!
-      --
-      -- The easiest way to use Telescope, is to start by doing something like:
       --  :Telescope help_tags
-      --
-      -- After running this command, a window will open up and you're able to
-      -- type in the prompt window. You'll see a list of `help_tags` options and
-      -- a corresponding preview of the help.
       --
       -- Two important keymaps to use while in Telescope are:
       --  - Insert mode: <c-/>
@@ -462,10 +448,16 @@ require('lazy').setup({
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
+
+          file_browser = {
+            theme = 'dropdown',
+            hijack_netrw = true, -- Replace netrw (default file explorer)
+          },
         },
       }
 
       -- Enable Telescope extensions if they are installed
+      pcall(require('telescope').load_extension 'file_browser')
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
 
@@ -481,6 +473,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>fe', '<cmd>Telescope file_browser<cr>', { desc = 'File Explorer' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
